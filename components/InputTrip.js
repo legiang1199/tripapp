@@ -11,6 +11,9 @@ import {
   View,
 } from "react-native";
 import color from "../misc/color";
+import { Picker } from "@react-native-picker/picker";
+import DatePicker from "react-native-date-picker";
+import MaskInput, { Masks } from "react-native-mask-input";
 
 const InputTrip = ({ visible, onClose, onSubmit, trip, isEdit }) => {
   const [tripName, setTripName] = React.useState("");
@@ -58,8 +61,17 @@ const InputTrip = ({ visible, onClose, onSubmit, trip, isEdit }) => {
       !tripDate.trim() &&
       !tripRequirements.trim() &&
       !tripDescription.trim()
-    ) 
-      return onClose();
+    )
+      return Alert.alert("Please fill all the fields");
+
+    if (!tripName.trim()) return Alert.alert("Please fill the trip name field");
+    if (!tripDestination.trim())
+      return Alert.alert("Please fill the trip destination field");
+    if (!tripDate.trim()) return Alert.alert("Please fill the trip date field");
+    if (!tripRequirements.trim())
+      return Alert.alert("Please fill the trip requirements field");
+    if (!tripDescription.trim())
+      return Alert.alert("Please fill the trip description field");
 
     if (isEdit) {
       onSubmit(
@@ -82,6 +94,29 @@ const InputTrip = ({ visible, onClose, onSubmit, trip, isEdit }) => {
       setTripDate("");
       setTripRequirements("");
       setTripDescription("");
+      Alert.alert(
+        "Trip Added",
+        "Name: " +
+          tripName +
+          "\n" +
+          "Destination: " +
+          tripDestination +
+          "\n" +
+          "Date: " +
+          tripDate +
+          "\n" +
+          "Requirements: " +
+          tripRequirements +
+          "\n" +
+          "Description: " +
+          tripDescription,
+        [
+          {
+            text: "OK",
+            onPress: () => console.log("OK Pressed"),
+          },
+        ]
+      );
     }
     onClose();
   };
@@ -97,34 +132,6 @@ const InputTrip = ({ visible, onClose, onSubmit, trip, isEdit }) => {
     onClose();
   };
 
-  // const validateForm = () => {
-  //   if (
-  //     !tripName.trim() &&
-  //     !tripDestination.trim() &&
-  //     !tripDate.trim() &&
-  //     !tripRequirements.trim() &&
-  //     !tripDescription.trim()
-  //   ) {
-  //     Alert.alert("Please fill in all fields");
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  // const displayAddForm = (tripName,tripDestination,tripDate) => {
-  //   if (validateForm()){
-  //     alert("Name:" + {tripName} + "Destination:" + {tripDestination} + "Date:" + {tripDate} + "Requirements:" + {tripRequirements} + "Description:" + {tripDescription});
-  //     [
-  //       {
-  //         text: "Cancel",
-  //         onPress: () => console.log("Cancel Pressed"),
-  //         style: "cancel",
-  //       },
-  //       { text: "OK", onPress: handleSubmit },
-  //     ],
-  //     { cancelable: true };
-  //   }
-  // };
   return (
     <>
       <StatusBar hidden />
@@ -145,23 +152,29 @@ const InputTrip = ({ visible, onClose, onSubmit, trip, isEdit }) => {
             placeholder="Enter Trip Destination"
           />
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Date Of Trip</Text>
-
-          <TextInput
-            value={tripDate}
+          <MaskInput
+            mask={Masks.DATE_DDMMYYYY}
             onChangeText={(text) => handleOnChangeText(text, "tripDate")}
+            value={tripDate}
             style={[styles.input, styles.name]}
-            placeholder="Enter Trip Date"
+            placeholder="Enter Trip Date // DD/MM/YYYY"
           />
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Requirements</Text>
 
-          <TextInput
-            value={tripRequirements}
-            onChangeText={(text) =>
-              handleOnChangeText(text, "tripRequirements")
-            }
-            style={[styles.input, styles.name]}
-            placeholder="Enter Trip Requirements"
-          />
+          <>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+              Require Risks Assessment
+            </Text>
+            <Picker
+              style={{ height: 160 }}
+              selectedValue={tripRequirements}
+              onValueChange={(itemValue) => setTripRequirements(itemValue)}
+            >
+              <Picker.Item label="Choose" value="" />
+              <Picker.Item label="Yes" value="Yes" />
+              <Picker.Item label="No" value="No" />
+            </Picker>
+          </>
+
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Description</Text>
 
           <TextInput
@@ -172,22 +185,10 @@ const InputTrip = ({ visible, onClose, onSubmit, trip, isEdit }) => {
           />
         </View>
         <View>
-          <Button
-            style={styles.Button}
-            title="Add Trip"
-            onPress={handleSubmit}
-          />
-          {tripName.trim() ||
-          tripDestination.trim() ||
-          tripDate.trim() ||
-          tripRequirements.trim() ||
-          tripDescription.trim() ? (
-            <Button style={styles.Button} title="Cancel" onPress={closeModal} />
-          ) : null}
+          <Button style={styles.Button} title="Submit" onPress={handleSubmit} />
+
+          <Button style={styles.Button} title="Cancel" onPress={closeModal} />
         </View>
-        <TouchableWithoutFeedback onPress={handleModalClose}>
-          <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
-        </TouchableWithoutFeedback>
       </Modal>
     </>
   );

@@ -40,7 +40,6 @@ const Home = ({ navigation }) => {
       tripRequirements,
       tripDescription,
     };
-    console.log("🚀 ~ file: Home.js:45 ~ Home ~ trip:", trip);
 
     const updatedTrips = [...trips, trip];
     setTrips(updatedTrips);

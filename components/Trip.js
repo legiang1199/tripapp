@@ -20,7 +20,7 @@ const Trip = ({ item, onPress }) => {
       <Text style={styles.name} numberOfLines={2}>{tripName}</Text>
       <Text numberOfLines={3}>{tripDestination}</Text>
       <Text numberOfLines={4}>{tripDate}</Text>
-      <Text numberOfLines={5}>Requirements: {tripRequirements}</Text>
+      <Text numberOfLines={5}>Require Assessment: {tripRequirements}</Text>
     </TouchableOpacity>
   );
 };

@@ -86,7 +86,7 @@ const TripDetail = (props) => {
         <Text style={styles.input}>{trip.tripDestination}</Text>
         <Text style={styles.title}>Date Of Trip</Text>
         <Text style={styles.input}>{trip.tripDate}</Text>
-        <Text style={styles.title}>Requirements</Text>
+        <Text style={styles.title}>Require Risks Assessment</Text>
         <Text style={styles.input}>{trip.tripRequirements}</Text>
         <Text style={styles.title}>Description</Text>
         <Text style={styles.input}>{trip.tripDescription}</Text>
